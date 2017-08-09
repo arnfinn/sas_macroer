@@ -1,4 +1,4 @@
-%macro Episode_of_care(dsn=, EoC_tid=28800, forste_hastegrad = 1, behold_datotid=0, debug = 0, nulle_liggedogn = 0);
+%macro Episode_of_care(dsn=, EoC_tid=28800, forste_hastegrad = 1, behold_datotid=0, debug = 0, nulle_liggedogn = 0, kols = 0);
 
 /* 
 Slette EoC-variabler som lages i denne makroen
@@ -131,15 +131,28 @@ by EoC_id aktivitetskategori3 EoC_Intern_nr inndatotid utdatotid;
 %end;
 run;
 
+/*
+EoC_hastegrad regnes kun på innleggelser (AHS, 9. mai 2017)
+*/
 data &dsn;
 set &dsn;
 by EoC_id;
 if first.EoC_id=1 then forste_hastegrad = hastegrad;
+aktkat = aktivitetskategori3;
+if uttilstand ne 1 then aktkat = 1;
+if aktkat = 1 then hastegrad_inn = hastegrad;
 run;
 
 PROC SQL;
 	CREATE TABLE &dsn AS 
-	SELECT *, min(aktivitetskategori3) as EoC_aktivitetskategori3, min(hastegrad) as EoC_hastegrad, max(forste_hastegrad) as EoC_forste_hastegrad, max(uttilstand) as EoC_uttilstand, max(alder) as EoC_alder
+	SELECT *, min(aktkat) as EoC_aktivitetskategori3, 
+   %if &kols eq 0 %then %do;
+   min(hastegrad_inn) as EoC_hastegrad, 
+   %end;
+   %else %do;
+   min(hastegrad) as EoC_hastegrad, 
+   %end;
+   max(forste_hastegrad) as EoC_forste_hastegrad, max(uttilstand) as EoC_uttilstand, max(alder) as EoC_alder
 	FROM &dsn
 	GROUP BY EoC_id;
 QUIT;
@@ -154,7 +167,7 @@ set &dsn;
 drop lag_pid;
 %end;
 %else %if &debug eq 0 %then %do;
-drop lag_pid EoC_diff inndatotid utdatotid forste_hastegrad;
+drop lag_pid EoC_diff inndatotid utdatotid forste_hastegrad aktkat hastegrad_inn;
 %end;
 format EoC_utdato EoC_inndato date10.;
 format EoC_inndatotid EoC_utdatotid datetime18.;
