@@ -3,13 +3,14 @@
 
 import sys
 import os
+import codecs
 
 def extractDoc(filename):
 
    # Extract text in file that are
    # between /*! and */
    
-   macroFile = open(filename, "r")
+   macroFile = codecs.open(filename, "r", "latin-1")
    macroFileContent = macroFile.readlines()
    macroFile.close()
 
@@ -65,8 +66,14 @@ for i in listofMacros:
    doc = extractDoc(folder + i)
    
    if doc != "":
+      print(i)
       index += "- [{0}]({0})\n".format(i.split(".")[0])
-      docFile = open(docFolder+i.split(".")[0]+".md", "w")
+      docFile = codecs.open(docFolder+i.split(".")[0]+".md", "w", "utf-8")
+#      try:
+#         doc_utf8 = doc.encode("UTF-8")
+#      except:
+#         print(doc)
+#         exit()
       docFile.write(heading + doc)
       docFile.close()
 
