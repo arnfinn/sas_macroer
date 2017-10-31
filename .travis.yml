@@ -7,8 +7,9 @@ python:
 #install:
 #  - pip install -r requirements.txt
 
-    #before_script:
-    #  - chmod +x scripts/lagDokumentasjon.py
+before_script:
+  - mkdir docs
+  - cp ./doc/_config.yml ./docs/.
 
 script:
   - python scripts/lagDokumentasjon.py

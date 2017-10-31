@@ -5,6 +5,8 @@ import sys
 import os
 import codecs
 import warnings
+import errno
+
 
 def extractDoc(filename):
 
@@ -48,6 +50,12 @@ listofMacros = findSASfiles(folder)
 
 docFolder = "./docs/"
 
+try:
+    os.makedirs(docFolder)
+except OSError as e:
+    if e.errno != errno.EEXIST:
+        raise
+
 index = ""
 for i in listofMacros:
    heading = '''[Ta meg tilbake.](./)
@@ -78,7 +86,7 @@ for i in listofMacros:
 
       
 indexHeading = ""
-for i in open(docFolder+"indexHead.md","r").readlines():
+for i in open("./doc/indexHead.md","r").readlines():
    indexHeading += i
 
 indexFile = open(docFolder+"index.md", "w")
