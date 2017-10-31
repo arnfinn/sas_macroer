@@ -42,18 +42,10 @@ def findSASfiles(folder):
 
    return(SASfiles)
 
-#def deleteMD(folder):
-#   for fn in os.listdir(folder):
-#      if fn.endswith(".md"):
-#         os.remove(folder+fn)
-
 folder = "./"
 listofMacros = findSASfiles(folder)
-print(listofMacros)
 
 docFolder = "./docs/"
-
-#deleteMD(docFolder)
 
 index = ""
 for i in listofMacros:
@@ -69,11 +61,6 @@ for i in listofMacros:
       print(i)
       index += "- [{0}]({0})\n".format(i.split(".")[0])
       docFile = codecs.open(docFolder+i.split(".")[0]+".md", "w", "utf-8")
-#      try:
-#         doc_utf8 = doc.encode("UTF-8")
-#      except:
-#         print(doc)
-#         exit()
       docFile.write(heading + doc)
       docFile.close()
 
