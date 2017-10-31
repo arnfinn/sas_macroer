@@ -4,6 +4,7 @@
 import sys
 import os
 import codecs
+import warnings
 
 def extractDoc(filename):
 
@@ -68,11 +69,12 @@ for i in listofMacros:
    doc = extractDoc(folder + i)
    
    if doc != "":
-      print(i)
       index += "- [{0}]({0})\n".format(i.split(".")[0])
       docFile = codecs.open(docFolder+i.split(".")[0]+".md", "w", "utf-8")
       docFile.write(heading + doc)
       docFile.close()
+   else:
+      warnings.warn("ADVARSEL: Makroen {0} er ikke dokumentert!".format(i.split(".")[0]))
 
       
 indexHeading = ""
