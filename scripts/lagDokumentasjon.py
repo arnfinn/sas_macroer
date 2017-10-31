@@ -54,6 +54,16 @@ for i in listofMacros:
 # {0}
 
 '''.format(i.split(".")[0])
+   
+   heading += '''
+
+## Innholdsfortegnelse
+{: .no_toc}
+
+* auto-gen TOC:
+{:toc}
+
+'''
 
    doc = extractDoc(folder + i)
    

@@ -1,11 +1,5 @@
 Dokumentasjon av SAS-makroene.
 
-# Innholdsfortegnelse
-{: .no_toc}
-
-* auto-gen TOC:
-{:toc}
-
 Makroene ligger her:
 ```
 \\tos-sas-skde-01\SKDE_SAS\Makroer\master
